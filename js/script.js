@@ -19,16 +19,17 @@ class Pokemon {
      * @param {string} sprite - The link to the Pokémon sprite
      * @param {Object} stats - All of the Pokémon stats
      */
-    constructor(number, name, sprite, stats){
+    constructor(number, name, sprite, stats, types){
         this.number = number;
-        this.name = name;
+        this.name   = name;
         this.sprite = sprite;
-        this.stats = stats;
+        this.stats  = stats;
+        this.types  = types
     }
 }
 
 /**
- * Capitalize the first letter of a word
+ * Capitalizes the first letter of a word
  * @param   {string} word - The word to be capitalized
  * @returns {string} Word with the first letter capitalized
  */
@@ -85,12 +86,26 @@ const getPokemons = async (_callback) => {
                     'SPD': pokemon.stats[4].base_stat,
                     'SPE': pokemon.stats[5].base_stat
                 };
+                let types   = pokemon.types.map((types => types.type.name.toUpperCase()));
 
-                pokemons.push(new Pokemon(number, name, sprite, stats));
+                pokemons.push(new Pokemon(number, name, sprite, stats, types));
             });
 
             renderPokedex(pokemons);
         });
+};
+
+/**
+ * Transforms a number to the format #XXX
+ * @param      {int} number - The number to be formatted 
+ * @returns {string} Number in format #XXX
+ */
+const formatNumber = (number) => {
+    if(number < 10)
+        return `#00${number}`;
+    else if(number <100)
+        return `#0${number}`;
+    return `#${number}`;
 };
 
 /**
@@ -101,18 +116,23 @@ const getPokemons = async (_callback) => {
 const renderPokedex = (pokemons) => {
     console.log(pokemons);
 
-    for(let i = 0; i < 9; i++)
+    for(let i = 0; i < 12; i++)
     {
         let pokemon = pokemons[i];
-        console.log(pokemon);
 
         pokedex.innerHTML += `
             <div class="pokemon-card">
-                <img src="${pokemon.sprite}" alt="${pokemon.name}" />
-                <p>${pokemon.name}</p>
+                <img src="${pokemon.sprite}" alt="${pokemon.name}" class="pokemon-img img-${pokemon.types[0].toLowerCase()}" />
+                <div class="pokemon-description">
+                    <p class="pokemon-number"><span>${formatNumber(pokemon.number)}</span></p>
+                    <p class="pokemon-name"><span>${pokemon.name}</span></p>  
+                    <div class="type type-${pokemon.types[0].toLowerCase()}"><span>${pokemon.types[0]}</span></div>
+                    ${ pokemon.types[1] == undefined ? '' : `<div class="type type-${pokemon.types[1].toLowerCase()}"><span>${pokemon.types[1]}</span></div>`}
+                </div>
             </div>
         `;
     }
 }
 
 getPokemons(renderPokedex);
+document.querySelectorAll('.pokemon-card');
