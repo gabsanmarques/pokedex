@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+
+/* RESET CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Oswald', sans-serif;
+}
+
+header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 11% 69% 20%;
+    grid-template-rows: 100%;
+    width: 100%;
+    padding: 1.5rem 1.5rem;
+    min-height: 15vh;
+}
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-container img {
+    width: 100%;
+    height: auto;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 15rem;
+    font-size: 1.2rem;
+    color: #888;
+    text-align: center;
+}
+
+.menu ul{
+    width: 100%;
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+}
+
+.menu ul li {
+    cursor: pointer;
+}
+
+.menu ul li:hover, .search-icon:hover {
+    color: black;
+    transition: 0.3s;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#search {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 2rem 0 1.25rem;
+    border-radius: 1.635rem;
+    outline: none;
+    border: none;
+    background-color: #EEE;
+}
+
+.search-icon {
+    margin-left: -2rem;
+    font-size: 0.85rem;
+    color: #888;
+    cursor: pointer;
+}
+
+.pokedex {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
