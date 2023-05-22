@@ -82,9 +82,9 @@ const getPokemons = async (_callback) => {
                     'HP':  pokemon.stats[0].base_stat,
                     'ATK': pokemon.stats[1].base_stat,
                     'DEF': pokemon.stats[2].base_stat,
+                    'SPE': pokemon.stats[5].base_stat,
                     'SPA': pokemon.stats[3].base_stat,
-                    'SPD': pokemon.stats[4].base_stat,
-                    'SPE': pokemon.stats[5].base_stat
+                    'SPD': pokemon.stats[4].base_stat
                 };
                 let types   = pokemon.types.map((types => types.type.name.toUpperCase()));
 
@@ -118,20 +118,69 @@ const renderPokedex = (pokemons) => {
 
     for(let i = 0; i < 12; i++)
     {
+        /**
+         * A single Pokémon
+         * @type {Pokemon}
+         */
         let pokemon = pokemons[i];
 
         pokedex.innerHTML += `
             <div class="pokemon-card">
-                <img src="${pokemon.sprite}" alt="${pokemon.name}" class="pokemon-img img-${pokemon.types[0].toLowerCase()}" />
-                <div class="pokemon-description">
-                    <p class="pokemon-number"><span>${formatNumber(pokemon.number)}</span></p>
-                    <p class="pokemon-name"><span>${pokemon.name}</span></p>  
-                    <div class="type type-${pokemon.types[0].toLowerCase()}"><span>${pokemon.types[0]}</span></div>
-                    ${ pokemon.types[1] == undefined ? '' : `<div class="type type-${pokemon.types[1].toLowerCase()}"><span>${pokemon.types[1]}</span></div>`}
+                <div class="pokemon-front" id="${pokemon.name}-front">
+                    <img src="${pokemon.sprite}" alt="${pokemon.name}" class="pokemon-img img-${pokemon.types[0].toLowerCase()}" />
+                    <div class="pokemon-description">
+                        <p class="pokemon-number"><span>${formatNumber(pokemon.number)}</span></p>
+                        <p class="pokemon-name"><span>${pokemon.name}</span></p>  
+                        <div class="type type-${pokemon.types[0].toLowerCase()}"><span>${pokemon.types[0]}</span></div>
+                        ${ pokemon.types[1] == undefined ? '' : `<div class="type type-${pokemon.types[1].toLowerCase()}"><span>${pokemon.types[1]}</span></div>`}
+                    </div>
+                </div>
+
+                <div class="pokemon-back type-${pokemon.types[0].toLowerCase()}">
+                    <span>${pokemon.name.toUpperCase()}</span>
+                    ${Object.entries(pokemon.stats).map(([stat, value]) => {
+                        console.log(stat);
+                        return `
+                            <div class="stat">
+                                <span class="stat-title">${stat}</span>
+                                <span class="stat-value">${value}</span>
+                            </div>
+                        `
+                    }).join('')}
                 </div>
             </div>
         `;
     }
+
+    /**
+     * Array of pokémon cards fronts
+     * @type {HTMLDivElement[]}
+     */
+    let pokemon_cards_fronts = document.querySelectorAll('.pokemon-front');
+
+    /**
+     * Array of pokémon cards backs
+     * @type {HTMLDivElement[]}
+     */
+    let pokemon_cards_backs = document.querySelectorAll('.pokemon-back');
+
+    pokemon_cards_fronts.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            card.classList.add('unturned');
+            card.classList.remove('turned');
+            pokemon_cards_backs[index].classList.add('turned');
+            pokemon_cards_backs[index].classList.remove('unturned');
+        })
+    });
+
+    pokemon_cards_backs.forEach((card, index) => {
+        card.addEventListener('click', () => {
+            card.classList.add('unturned');
+            card.classList.remove('turned');
+            pokemon_cards_fronts[index].classList.add('turned');
+            pokemon_cards_fronts[index].classList.remove('unturned');
+        })
+    })
 }
 
 getPokemons(renderPokedex);
