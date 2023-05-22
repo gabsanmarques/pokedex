@@ -183,7 +183,7 @@ main {
 
 .stat {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 0.4fr 1fr;
     align-items: center;
 }
 
@@ -191,8 +191,34 @@ main {
     text-align: left;
 }
 
+.stat-bar {
+    box-sizing: content-box;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template: 1fr / 1fr;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 1rem;
+    height: 80%;
+    border: 0.13rem solid;
+}
+
+.stat-bar > * {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+
 .stat-value {
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    color: #222;
     text-align: right;
+}
+
+.stat-bar-inner {
+    height: 100%;
+    background-color: #222;
 }
 
 @keyframes rotateToBack {
@@ -264,7 +290,6 @@ main {
 }
 
 .type {
-    background-color: black;
     color: white;
     font-size: 0.7rem;
     border-radius: 0.6rem;
@@ -345,7 +370,7 @@ main {
     background-color: var(--dragon);
 }
 
-.pokemon-front:hover .img-grass {
+.pokemon-front:hover .img-grass, .bar-grass {
     background-color: var(--light-grass);
 }
 
@@ -404,5 +429,77 @@ main {
     background-color: var(--light-dragon);
 }
 
+.stat-bar.type-grass {
+    background-color: var(--light-grass);
+    border-color: var(--light-grass);
+}
 
+.stat-bar.type-bug {
+    background-color: var(--light-bug);
+    border-color: var(--light-bug);
+}
 
+.stat-bar.type-dragon {
+    background-color: var(--light-dragon);
+    border-color: var(--light-dragon);
+}
+
+.stat-bar.type-electric {
+    background-color: white;
+    border-color: white;
+}
+
+.stat-bar.type-fighting {
+    background-color: var(--light-fighting);
+    border-color: var(--light-fighting);
+}
+
+.stat-bar.type-fire {
+    background-color: var(--light-fire);
+    border-color: var(--light-fire);
+}
+
+.stat-bar.type-flying {
+    background-color: var(--light-flying);
+    border-color: var(--light-flying);
+}
+
+.stat-bar.type-ghost {
+    background-color: var(--light-ghost);
+    border-color: var(--light-ghost);
+}
+
+.stat-bar.type-ground {
+    background-color: var(--light-ground);
+    border-color: var(--light-ground);
+}
+
+.stat-bar.type-ice {
+    background-color: var(--light-ice);
+    border-color: var(--light-ice);
+}
+
+.stat-bar.type-normal {
+    background-color: var(--light-normal);
+    border-color: var(--light-normal);
+}
+
+.stat-bar.type-poison {
+    background-color: var(--light-poison);
+    border-color: var(--light-poison);
+}
+
+.stat-bar.type-psychic {
+    background-color: var(--light-psychic);
+    border-color: var(--light-psychic);
+}
+
+.stat-bar.type-rock {
+    background-color: var(--light-rock);
+    border-color: var(--light-rock);
+}
+
+.stat-bar.type-water {
+    background-color: var(--light-water);
+    border-color: var(--light-water);
+}

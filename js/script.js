@@ -116,7 +116,7 @@ const formatNumber = (number) => {
 const renderPokedex = (pokemons) => {
     console.log(pokemons);
 
-    for(let i = 0; i < 12; i++)
+    for(let i = 67; i < 79; i++)
     {
         /**
          * A single Pokémon
@@ -143,7 +143,10 @@ const renderPokedex = (pokemons) => {
                         return `
                             <div class="stat">
                                 <span class="stat-title">${stat}</span>
-                                <span class="stat-value">${value}</span>
+                                <div class="stat-bar type-${pokemon.types[0].toLowerCase()}">
+                                    <div class="stat-value value-${pokemon.types[0].toLowerCase()}">${value}</div>
+                                    <div class="stat-bar-inner" style="width: ${value/255 * 100}%;"></div>
+                                </div>
                             </div>
                         `
                     }).join('')}
