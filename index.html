@@ -43,26 +43,55 @@
             </ul>
         </nav>
 
-        <div class="search-container">
-            <input type="text" name="search" id="search" placeholder="Filtre por nome ou número..." />
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <div class="filters-container">
+
+            <div class="region-container">
+                <select name="regions" id="region" class="region-selector">
+                    <option value="1">All Pokémon</option>
+                    <option value="2">Kanto      </option>
+                    <option value="7">Johto      </option>
+                    <option value="15">Hoenn      </option>
+                    <option value="6">Sinnoh     </option>
+                    <option value="9">Unova      </option>
+                    <option value="7">Kalos      </option>
+                    <option value="8">Alola      </option>
+                    <option value="9">Galar      </option>
+                    <option value="10">Hisui      </option>
+                </select>
+            </div>
+    
+            <div class="search-container">
+                <input type="text" name="search" id="search" placeholder="Filtre por nome ou nº..." oninput="renderPokedex(!(getFilter() == ''))"/>
+                <i class="fa-solid fa-filter search-icon"></i>
+            </div>
+
         </div>
+        
         
     </header>
 
     <main>
-        
+
+        <div class="loading">
+            <img src="assets/img/loading.gif" alt="" />
+        </div>
+
         <div class="pokedex-container">
             
             <div class="left-arrow">
-                <i class="fa-solid fa-arrow-left"></i>
+                <i class="fa-solid fa-arrow-left" onclick="slideLeft()"></i>
             </div>
-            <div class="pokedex">
-                
+
+            <div class="pokedex-wrapper">
+                <div class="pokedex-slider slide-right">
+
+                </div>
             </div>
+            
             <div class="right-arrow">
-                <i class="fa-solid fa-arrow-right"></i>
+                <i class="fa-solid fa-arrow-right" onclick="slideRight()"></i>
             </div>
+
         </div>
         
     </main>
