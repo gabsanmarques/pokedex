@@ -49,13 +49,13 @@ var current_page = 1;
  * Search bar
  * @type {HTMLInputElement}
  */
-const search_bar = document.querySelector('#search');
+const search_bar = document.getElementById('search');
 
 /**
  * Region selector element
  * @type {HTMLSelectElement}
  */
-const region_selector = document.querySelector('#region');
+let pokedex_selector = document.getElementById('region');
 
 /**
  * The left arrow element
@@ -119,6 +119,12 @@ const formatId = (id) => {
  */
 const getFilter = () => {
     return search_bar.value;
+};
+
+const setPokedexSelectorEventListener = () => {
+  
+    pokedex_selector.addEventListener('select', )
+
 };
 
 /**
@@ -313,6 +319,8 @@ const refreshSlides = () => {
  * @param {JSON[]} results - a set of Pokémon in JSON format
  */
 const fillPokemonArray = (results) => {
+    all_pokemon = [];
+
     results.map((pokemon, index) => {
         let id      = index + 1;
         let name    = capitalize(pokemon.name);
@@ -348,10 +356,10 @@ const filterPokemon = (filter) => {
 
 /**
  * 
- * @param {int} region_id - The ID of the region
- * @returns {Promise} - Promise that resolves when the region's pokédex fetch is complete
+ * @param {int} pokedex_id - The ID of the pokedex
+ * @returns {Promise} - Promise that resolves when the pokédex's fetch is complete
  */
-const fetchRegionPokedex = (region_id) => {
+const fetchPokedex = (pokedex_id) => {
 
     return new Promise((resolve, reject) => {
         /**
@@ -366,7 +374,7 @@ const fetchRegionPokedex = (region_id) => {
          */
         let region_pokedex = [];
 
-        fetch(`${base_url}${region_id}`)
+        fetch(`${base_url}${pokedex_id}`)
             .then(results => results.json())
             .then(r => {
                 region_pokedex = r.pokemon_entries;
@@ -406,7 +414,6 @@ const fetchPokemon = (region_pokedex) => {
         Promise.all(promises)
         .then(results => Promise.all(results.map(r => r.json())))
         .then(results => {
-            console.log(results);
             fillPokemonArray(results);
             resolve();
         })
@@ -506,10 +513,9 @@ const createPokedexPage = (page_number, pokemon_render_list) => {
  * @param {boolean} isLoading - The state of the page (if it's loading or not)
  */
 const setLoading = (isLoading) => {
-    if(isLoading) loading.style.display = 'block';
+    if(isLoading) loading.style.display = 'flex';
     else loading.style.display = 'none';
 }
-
 
 /**
  * Render the Pokémon cards on the document from the Pokémon array
@@ -524,8 +530,6 @@ const renderPokedex = (isSearchActive) => {
     let pokemon_render_list = [];
 
     let n_pages;
-    
-    setLoading(true);
 
     if(isSearchActive)
         pokemon_render_list = filterPokemon(getFilter());
@@ -543,19 +547,79 @@ const renderPokedex = (isSearchActive) => {
     setNameScrollings();
     refreshSlides();
 
-    setLoading(false);
+};
+
+const extractIdFromURL = (url) => {
+
+    let id = url.split('https://pokeapi.co/api/v2/pokedex/').slice(1, 2)[0].replace('/', '');
+    return id;
 
 };
-// ===========================================================================================
+
+const fillPokedexSelector = (pokedexes) => {
+
+    return new Promise((resolve, reject) => {
+        let pokedex_id;
+        let pokedex_name;
+
+        pokedexes.forEach(pokedex => {
+
+            let pokedex_item = document.createElement('option');
+
+            pokedex_id = extractIdFromURL(pokedex.url);
+            pokedex_name = capitalize(pokedex.name);
+
+            if(pokedex_id == 1)
+                pokedex_item.selected = 'selected';
+
+            pokedex_item.value = pokedex_id;
+            pokedex_item.innerHTML = `${pokedex_name}`;
+
+            pokedex_selector.appendChild(pokedex_item);
+        });
+
+        resolve();
+    });
+    
+
+};
+
+const fetchAllPokedexes = () => {
+
+    return new Promise((resolve, reject) => {
+        fetch('https://pokeapi.co/api/v2/pokedex?offset=0&limit=30')
+        .then(data => data.json())
+        .then(data => {
+            console.log(data.results);
+            fillPokedexSelector(data.results)
+                .then(resolve());
+        })  
+        .catch(err => {
+            console.log(err);
+            reject(new Error("Ocorreu um problema ao obter os dados..."));
+        });  
+    });
+        
+};
 
 const fetchAndRender = (region) => {
-    fetchRegionPokedex(region).then(setTimeout(() => {
+    
+    setLoading(true);
+    console.log(`Rendering pokedex ${region}`);
+    fetchPokedex(region).then(setTimeout(() => {
         renderPokedex(!(getFilter() == ''));
+        setLoading(false);
     }, 5000));
 };
 
+const getSelectedPokedex = () => {
+    return pokedex_selector.options[pokedex_selector.selectedIndex].value;
+};
+
 // ====================================== MAIN PROGRAM =======================================
-window.onload = () => {
-    fetchAndRender(1);
-}
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchAllPokedexes();
+    fetchAndRender(getSelectedPokedex());
+});
 // ===========================================================================================
+

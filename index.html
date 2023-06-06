@@ -46,17 +46,8 @@
         <div class="filters-container">
 
             <div class="region-container">
-                <select name="regions" id="region" class="region-selector">
-                    <option value="1">All Pokémon</option>
-                    <option value="2">Kanto      </option>
-                    <option value="7">Johto      </option>
-                    <option value="15">Hoenn      </option>
-                    <option value="6">Sinnoh     </option>
-                    <option value="9">Unova      </option>
-                    <option value="7">Kalos      </option>
-                    <option value="8">Alola      </option>
-                    <option value="9">Galar      </option>
-                    <option value="10">Hisui      </option>
+                <select name="regions" id="region" class="region-selector" onchange="fetchAndRender(getSelectedPokedex())">
+                    
                 </select>
             </div>
     
