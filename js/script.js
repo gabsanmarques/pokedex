@@ -350,9 +350,6 @@ async function fillPokemonArray(results) {
         //let types = pokemon.types.map((types => types.type.name.toUpperCase()));
         all_pokemon.push(new Pokemon(id, name, sprite, stats, types));
     });
-
-    console.log(all_pokemon);
-
 }
 
 /**
@@ -424,7 +421,10 @@ async function loadImage(src) {
     return new Promise((resolve, reject) => {
         let img = new Image();
         img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error("Erro ao carregar a imagem..."));
+        img.onerror = async () => {
+            console.error(new Error("Erro ao processar a imagem, tentando novamente..."));
+            resolve(await loadImage(src));
+        };
         img.src = src;
     }) 
     
@@ -630,9 +630,6 @@ async function renderPokedex(isSearchActive) {
     else
         pokemon_render_list = all_pokemon;
 
-    console.log("All Pokémon when renderPokédex is called:");
-    console.log(all_pokemon);
-
     n_pages = Math.ceil(pokemon_render_list.length / 12);
 
     pokedex_slider.innerHTML = "";
@@ -706,8 +703,8 @@ async function fillPokedexSelector(pokedexes) {
             {
                 let pokedex_item = document.createElement('option');
                 let pokedex_id = extractIdFromURL(pokedex.url)
-                if (pokedex_id == 1)
-                pokedex_item.selected = 'selected';
+                if (pokedex_id == 2 )
+                    pokedex_item.selected = 'selected';
 
                 pokedex_item.value = pokedex_id;
                 pokedex_item.innerHTML = `${pokedex.name.replace('Original ', '')}`;
@@ -749,7 +746,6 @@ async function fetchAndRender(region) {
         console.error(e);
     }
     finally {
-        console.log("Function fetchAndRender completed succesfully!");
         setLoading(false);
     };
 };

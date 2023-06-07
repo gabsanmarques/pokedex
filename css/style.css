@@ -62,7 +62,8 @@ header {
     grid-template-columns: 11% 60% 29%;
     grid-template-rows: 100%;
     width: 100%;
-    padding: 1.5rem 1.5rem;
+    padding: 1rem 1.5rem;
+    padding-bottom: 0;
 }
 
 footer {
@@ -220,6 +221,14 @@ main > * {
     grid-template: 1fr / 1fr;
     place-items: center;
     cursor: pointer;
+}
+
+optgroup {
+    font-size: 0.7rem;
+}
+
+option {
+    font-size: 0.8rem;
 }
 
 .pokemon-card > div {
